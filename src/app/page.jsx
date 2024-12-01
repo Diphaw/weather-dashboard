@@ -21,13 +21,19 @@ export default function Home() {
     const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=${units}`
 
+    console.log('Fetching URL:', url)
+
     try {
       const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Weather data not found')
+      }
       const data = await response.json()
       setWeatherData(data)
       updateRecentSearches(location)
     } catch (error) {
       console.error('Error fetching weather data:', error)
+      alert('Failed to fetch weather data. Please try again.')
     }
   }
 
